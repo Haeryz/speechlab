@@ -1,0 +1,42 @@
+# infra/docker-compose.yml
+version: '3.8'
+
+services:
+  api-gateway:
+    build: ../backend/api-gateway
+    ports:
+      - "8080:8080"
+    env_file:
+      - ../.env
+      - ../backend/api-gateway/.env.local
+    depends_on:
+      - mongodb
+
+  voice-cloning:
+    build: ../backend/voice-cloning
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../.env
+      - ../backend/voice-cloning/.env.local  # ELEVENLABS_API_KEY=...
+
+  frontend:
+    build: ../frontend
+    ports:
+      - "5173:5173"
+    env_file:
+      - ../.env
+      - ../frontend/.env.local
+
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+volumes:
+  mongodb_data:
