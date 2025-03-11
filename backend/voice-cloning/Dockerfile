@@ -1,16 +1,19 @@
-# backend/voice-cloning/Dockerfile
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies (if needed)
-RUN apt-get update && apt-get install -y ffmpeg
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy only requirements first to leverage Docker cache
+# Copy requirements first to leverage Docker cache
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest
+# Copy application code
 COPY . .
 
+# Expose port and run
+EXPOSE 8000
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
