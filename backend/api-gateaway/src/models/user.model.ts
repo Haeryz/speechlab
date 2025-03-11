@@ -22,6 +22,6 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'VoiceProfile'
     }]
-});
+}, {timestamps: true});
 
 export default model('User', userSchema);
