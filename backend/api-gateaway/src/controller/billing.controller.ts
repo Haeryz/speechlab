@@ -22,7 +22,7 @@ const getBilling = async (req: Request, res: Response) => {
     }
 };
 
-const createBilling = async (req: Request, res: Response) => {
+export const createBilling = async (req: Request, res: Response) => {
     try {
         const { userId, amount, currency, paymentMethod, paymentStatus } = req.body;
         if (!userId || !amount || !currency || !paymentMethod || !paymentStatus) {
