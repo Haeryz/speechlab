@@ -21,3 +21,28 @@ const getVoiceProfile = async (req: Request, res: Response) => {
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
+
+export const createVoiceProfile = async (req: Request, res: Response) => {
+    try {
+        const {  userId, voiceProfileName, voiceProfileDescription, voiceProfileGender, voiceProfileLanguage, voiceProfileVoice } = req.body;
+        if (!userId || !voiceProfileName || !voiceProfileDescription || !voiceProfileGender || !voiceProfileLanguage || !voiceProfileVoice) {
+            return res.status(400).json({ success: false, message: "Missing required fields" });
+        }
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ success: false, message: "Invalid user id" });
+        }
+        const newVoiceProfile = new VoiceProfile({
+            userId,
+            voiceProfileName,
+            voiceProfileDescription,
+            voiceProfileGender,
+            voiceProfileLanguage,
+            voiceProfileVoice
+        });
+        await newVoiceProfile.save();
+        return res.status(201).json({ success: true, message: "Voice profile created" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+};
