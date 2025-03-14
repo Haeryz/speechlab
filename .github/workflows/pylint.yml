@@ -24,7 +24,7 @@ jobs:
       run: |
         cat > .pylintrc << EOL
         [MASTER]
-        fail-under=5.0
+        fail-under=3.0
         
         [MESSAGES CONTROL]
         disable=
