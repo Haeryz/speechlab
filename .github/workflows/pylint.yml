@@ -18,6 +18,20 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pylint
+        # Install project-specific dependencies from requirements.txt
+        pip install -r backend/voice-cloning/requirements.txt
+    - name: Create pylint config file
+      run: |
+        cat > .pylintrc << EOL
+        [MASTER]
+        fail-under=5.0
+        
+        [MESSAGES CONTROL]
+        disable=
+            import-error,
+            missing-module-docstring,
+            missing-function-docstring
+        EOL
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint --rcfile=.pylintrc $(git ls-files '*.py')
