@@ -21,3 +21,20 @@ export const getUser = async (req: Request, res: Response) => {
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
+
+export const createUser = async (req: Request, res: Response) => {
+    try {
+        const { name, password, apikey, credits, voiceProfile } = req.body;
+
+        if (!name || !password || !apikey || !credits || !voiceProfile) {
+            return res.status(400).json({ success: false, message: "Missing required fields" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(voiceProfile)) {
+            return res.status(400).json({ success: false, message: "Invalid voice profile id" });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+};
