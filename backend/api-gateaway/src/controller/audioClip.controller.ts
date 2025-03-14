@@ -21,3 +21,27 @@ export const getAudioClip = async (req: Request, res: Response) => {
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
+
+export const createAudioClip = async (req: Request, res: Response) => {
+    try {
+        const { title, description, audioUrl, duration, userId } = req.body;
+        if (!title || !description || !audioUrl || !duration || !userId) {
+            return res.status(400).json({ success: false, message: "Missing required fields" });
+        }
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ success: false, message: "Invalid user id" });
+        }
+        const newAudioClip = new AudioClip({
+            title,
+            description,
+            audioUrl,
+            duration,
+            userId
+        });
+        await newAudioClip.save();
+        return res.status(201).json({ success: true, message: "Audio clip created" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+};
