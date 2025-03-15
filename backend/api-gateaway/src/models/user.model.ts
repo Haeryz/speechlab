@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 const userSchema = new Schema({
-    name: {
+    email: {
         type: String,
         unique: true,
         required: true
@@ -10,18 +10,33 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    apikey: {
+    name: {
         type: String,
+        unique: true,
         required: true
     },
-    credits: {
-        type: Number,
-        default: 0
+    role: {
+        type: String,
+        required: true,
+        default: 'learner'
     },
-    voiceProfile: [{
-        type: Schema.Types.ObjectId,
-        ref: 'VoiceProfile'
-    }]
+    subscriptionTier: {
+        type: String,
+        required: true,
+        default: 'free'
+    },
+    lastlogin: {
+        type: Date,
+        default: Date.now
+    },
+    oauthProvider: {
+        type: String,
+        default: null
+    },
+    oauthId: {
+        type: String,
+        default: null
+    },
 }, {timestamps: true});
 
 export default model('User', userSchema);
